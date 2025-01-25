@@ -4,9 +4,11 @@ const Layout = () => {
   return (
     <>
       <nav>
-        <ul>
+        <ul className="flex bg-slate-600 text-yellow-500">
           <li>
-            <Link to="/">Home</Link>
+            <Link to="/" className="text-stone-600">
+              Home
+            </Link>
           </li>
           <li>
             <Link to="/cart">Cart</Link>
@@ -20,4 +22,3 @@ const Layout = () => {
 };
 
 export default Layout;
-<>Layout I guess</>;

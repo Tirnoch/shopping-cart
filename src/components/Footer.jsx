@@ -20,7 +20,7 @@ const Footer = () => {
             </p>
             <div className="flex items-center">
               <a
-                href="https://github.com/yourusername/shopping-cart"
+                href="https://github.com/tirnoch/shopping-cart"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="text-gray-600 hover:text-amber-500 transition-colors flex items-center"

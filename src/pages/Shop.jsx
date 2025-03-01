@@ -136,7 +136,7 @@ const Shop = () => {
       {/* Products Grid */}
       {!isLoading && !error && (
         <>
-          <p className="mb-4 text-gray-600">
+          <p className="mb-4 bg-white px-4 py-2 rounded-md shadow-sm inline-block font-medium text-gray-800 border-l-4 border-amber-500">
             {filteredProducts.length} products found
           </p>
 

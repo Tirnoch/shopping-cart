@@ -1,11 +1,22 @@
 import { Link } from 'react-router-dom';
-import Hero from '../components/Hero';
+import { useState, useEffect, useContext } from 'react';
+import { ShopContext } from './Layout';
+import Product from '../components/Product';
 
 const Home = () => {
+  const { products, isLoading } = useContext(ShopContext);
+  const [featuredProducts, setFeaturedProducts] = useState([]);
+
+  useEffect(() => {
+    if (products.length > 0) {
+      // Get 3 random products for the featured section
+      const shuffled = [...products].sort(() => 0.5 - Math.random());
+      setFeaturedProducts(shuffled.slice(0, 3));
+    }
+  }, [products]);
+
   return (
     <main>
-      <Hero />
-
       <section className="py-16 bg-white bg-opacity-80">
         <div className="container-content">
           <div className="max-w-3xl mx-auto text-center">
@@ -20,6 +31,25 @@ const Home = () => {
             <Link to="/shop">
               <button className="btn-primary">Shop Now</button>
             </Link>
+          </div>
+
+          {/* Featured Products */}
+          <div className="mt-16">
+            <h3 className="text-2xl font-semibold text-center mb-8">
+              Featured Products
+            </h3>
+
+            {isLoading ? (
+              <div className="flex justify-center">
+                <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-amber-500"></div>
+              </div>
+            ) : (
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+                {featuredProducts.map((product) => (
+                  <Product key={product.id} {...product} />
+                ))}
+              </div>
+            )}
           </div>
 
           <div className="mt-16 grid grid-cols-1 md:grid-cols-3 gap-8">

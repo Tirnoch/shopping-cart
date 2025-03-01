@@ -92,7 +92,7 @@ const Layout = () => {
     <ShopContext.Provider value={contextValue}>
       <div
         id="wrapper"
-        className="min-h-screen flex flex-col bg-cover bg-center bg-[url('assets/home-background.jpg')]"
+        className="min-h-screen flex flex-col bg-fixed bg-cover bg-center bg-[url('assets/home-background.jpg')]"
       >
         <header className="sticky top-0 z-10">
           <nav className="bg-white bg-opacity-90 shadow-md">

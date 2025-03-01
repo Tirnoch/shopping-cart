@@ -1,15 +1,7 @@
 import { useState, useContext } from 'react';
 import { ShopContext } from '../pages/Layout';
 
-const Product = ({
-  id,
-  title,
-  price,
-  image,
-  rating,
-  description,
-  category,
-}) => {
+const Product = ({ id, title, price, image, rating, description }) => {
   const [quantity, setQuantity] = useState(1);
   const { addToCart } = useContext(ShopContext);
 
@@ -116,9 +108,6 @@ const Product = ({
     <div className="card group h-full flex flex-col transition-all duration-300 hover:shadow-xl">
       {/* Product Image */}
       <div className="relative overflow-hidden h-48 mb-4">
-        <div className="absolute top-0 left-0 p-2 bg-amber-500 text-white text-xs font-bold rounded-br-lg z-10">
-          {category}
-        </div>
         <img
           src={image}
           alt={title}

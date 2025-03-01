@@ -1,11 +1,12 @@
 import { useState, useContext } from 'react';
-import { Link } from 'react-router-dom';
-import { ShopContext } from '../context/ShopContext';
 import PropTypes from 'prop-types';
+import { ShopContext } from '../context/ShopContext';
+import ProductModal from './ProductModal';
 
 const Product = ({ id, title, price, image, rating, description }) => {
   const [quantity, setQuantity] = useState(1);
   const { addToCart } = useContext(ShopContext);
+  const [showModal, setShowModal] = useState(false);
 
   // Ensure we don't go below 1 for quantity
   const decreaseQuantity = () => {
@@ -19,7 +20,8 @@ const Product = ({ id, title, price, image, rating, description }) => {
 
   // Handle adding to cart
   const handleAddToCart = (e) => {
-    e.preventDefault(); // Prevent navigation if clicked within a link
+    e.preventDefault(); // Prevent modal opening if clicked within a button
+
     addToCart({ id, title, price, image }, quantity);
 
     // Show visual feedback (could use a toast notification in a real app)
@@ -37,6 +39,21 @@ const Product = ({ id, title, price, image, rating, description }) => {
 
     // Reset quantity to 1
     setQuantity(1);
+  };
+
+  // Open the modal
+  const openModal = (e) => {
+    e.preventDefault();
+    setShowModal(true);
+    // Prevent body scrolling while modal is open
+    document.body.style.overflow = 'hidden';
+  };
+
+  // Close the modal
+  const closeModal = () => {
+    setShowModal(false);
+    // Re-enable body scrolling
+    document.body.style.overflow = 'auto';
   };
 
   // Generate star rating display
@@ -107,98 +124,130 @@ const Product = ({ id, title, price, image, rating, description }) => {
     );
   };
 
-  return (
-    <div className="card group h-full flex flex-col transition-all duration-300 hover:shadow-xl">
-      {/* Product Image - Clickable */}
-      <Link
-        to={`/product/${id}`}
-        className="block relative overflow-hidden h-48 mb-4"
-      >
-        <img
-          src={image}
-          alt={title}
-          className="w-full h-full object-contain transition-transform duration-300 group-hover:scale-105"
-        />
-        <div className="absolute inset-0 bg-black bg-opacity-0 group-hover:bg-opacity-10 transition-all duration-300 flex items-center justify-center">
-          <span className="text-white bg-amber-500 px-3 py-1 rounded-full opacity-0 group-hover:opacity-100 transform translate-y-4 group-hover:translate-y-0 transition-all duration-300">
-            View Details
-          </span>
-        </div>
-      </Link>
+  // Product data to pass to modal
+  const productData = {
+    id,
+    title,
+    price,
+    image,
+    rating,
+    description,
+  };
 
-      {/* Product Info */}
-      <div className="flex-grow flex flex-col p-4">
-        {/* Product Title - Clickable */}
-        <Link to={`/product/${id}`} className="block">
-          <h2 className="text-lg font-semibold text-gray-800 mb-2 line-clamp-2 h-14 hover:text-amber-500 transition-colors">
+  return (
+    <>
+      <div
+        className="card group h-full flex flex-col transition-all duration-300 product-card-hover"
+        onClick={openModal}
+      >
+        {/* Product Image */}
+        <div className="relative overflow-hidden h-48 mb-4 cursor-pointer">
+          <img
+            src={image}
+            alt={title}
+            className="w-full h-full object-contain transition-transform duration-300 group-hover:scale-105"
+          />
+          <div className="absolute inset-0 bg-black bg-opacity-0 group-hover:bg-opacity-10 transition-all duration-300 flex items-center justify-center">
+            <span className="text-white bg-amber-500 px-3 py-1 rounded-full opacity-0 group-hover:opacity-100 transform translate-y-4 group-hover:translate-y-0 transition-all duration-300">
+              View Details
+            </span>
+          </div>
+        </div>
+
+        {/* Product Info */}
+        <div className="flex-grow flex flex-col p-4">
+          {/* Product Title */}
+          <h2 className="text-lg font-semibold text-gray-800 mb-2 line-clamp-2 h-14 hover:text-amber-500 transition-colors cursor-pointer">
             {title}
           </h2>
-        </Link>
 
-        {renderStars()}
-        <div className="mt-2 text-xl font-bold text-amber-500">
-          ${price?.toFixed(2)}
-        </div>
+          {renderStars()}
 
-        <p className="mt-2 text-sm text-gray-600 line-clamp-3 mb-4 flex-grow">
-          {description}
-        </p>
+          <div className="mt-2 text-xl font-bold text-amber-500">
+            ${price?.toFixed(2)}
+          </div>
 
-        {/* Quantity and Add to Cart */}
-        <div className="mt-auto">
-          <div className="flex items-center justify-between mb-3">
-            <span className="text-sm font-medium text-gray-700">Quantity:</span>
-            <div className="flex items-center border border-gray-300 rounded-md">
+          <p className="mt-2 text-sm text-gray-600 line-clamp-3 mb-4 flex-grow">
+            {description}
+          </p>
+
+          {/* Quantity and Add to Cart */}
+          <div className="mt-auto">
+            <div className="flex items-center justify-between mb-3">
+              <span className="text-sm font-medium text-gray-700">
+                Quantity:
+              </span>
+              <div className="flex items-center border border-gray-300 rounded-md">
+                <button
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    decreaseQuantity();
+                  }}
+                  className="px-3 py-1 text-gray-600 hover:bg-gray-100"
+                  aria-label="Decrease quantity"
+                >
+                  -
+                </button>
+                <span className="px-3 py-1 text-gray-800">{quantity}</span>
+                <button
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    increaseQuantity();
+                  }}
+                  className="px-3 py-1 text-gray-600 hover:bg-gray-100"
+                  aria-label="Increase quantity"
+                >
+                  +
+                </button>
+              </div>
+            </div>
+
+            <div className="flex gap-2">
               <button
-                onClick={decreaseQuantity}
-                className="px-3 py-1 text-gray-600 hover:bg-gray-100"
-                aria-label="Decrease quantity"
+                id={`add-to-cart-${id}`}
+                onClick={(e) => {
+                  e.stopPropagation();
+                  handleAddToCart(e);
+                }}
+                className="flex-1 btn-primary transition-colors duration-300"
               >
-                -
+                Add to Cart
               </button>
-              <span className="px-3 py-1 text-gray-800">{quantity}</span>
+
               <button
-                onClick={increaseQuantity}
-                className="px-3 py-1 text-gray-600 hover:bg-gray-100"
-                aria-label="Increase quantity"
+                onClick={(e) => {
+                  e.stopPropagation();
+                  openModal(e);
+                }}
+                className="px-4 py-2 bg-slate-100 hover:bg-slate-200 text-slate-700 rounded-md transition-colors flex items-center justify-center"
+                aria-label="View product details"
               >
-                +
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  className="h-5 w-5"
+                  viewBox="0 0 20 20"
+                  fill="currentColor"
+                >
+                  <path d="M10 12a2 2 0 100-4 2 2 0 000 4z" />
+                  <path
+                    fillRule="evenodd"
+                    d="M.458 10C1.732 5.943 5.522 3 10 3s8.268 2.943 9.542 7c-1.274 4.057-5.064 7-9.542 7S1.732 14.057.458 10zM14 10a4 4 0 11-8 0 4 4 0 018 0z"
+                    clipRule="evenodd"
+                  />
+                </svg>
               </button>
             </div>
           </div>
-
-          <div className="flex gap-2">
-            <button
-              id={`add-to-cart-${id}`}
-              onClick={handleAddToCart}
-              className="flex-1 btn-primary transition-colors duration-300"
-            >
-              Add to Cart
-            </button>
-
-            <Link
-              to={`/product/${id}`}
-              className="px-4 py-2 bg-slate-100 hover:bg-slate-200 text-slate-700 rounded-md transition-colors flex items-center justify-center"
-              aria-label="View product details"
-            >
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                className="h-5 w-5"
-                viewBox="0 0 20 20"
-                fill="currentColor"
-              >
-                <path d="M10 12a2 2 0 100-4 2 2 0 000 4z" />
-                <path
-                  fillRule="evenodd"
-                  d="M.458 10C1.732 5.943 5.522 3 10 3s8.268 2.943 9.542 7c-1.274 4.057-5.064 7-9.542 7S1.732 14.057.458 10zM14 10a4 4 0 11-8 0 4 4 0 018 0z"
-                  clipRule="evenodd"
-                />
-              </svg>
-            </Link>
-          </div>
         </div>
       </div>
-    </div>
+
+      {/* Product Modal */}
+      <ProductModal
+        product={productData}
+        isOpen={showModal}
+        onClose={closeModal}
+      />
+    </>
   );
 };
 

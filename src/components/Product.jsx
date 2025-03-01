@@ -1,4 +1,5 @@
 import { useState, useContext } from 'react';
+import { Link } from 'react-router-dom';
 import { ShopContext } from '../context/ShopContext';
 import PropTypes from 'prop-types';
 
@@ -17,7 +18,8 @@ const Product = ({ id, title, price, image, rating, description }) => {
   };
 
   // Handle adding to cart
-  const handleAddToCart = () => {
+  const handleAddToCart = (e) => {
+    e.preventDefault(); // Prevent navigation if clicked within a link
     addToCart({ id, title, price, image }, quantity);
 
     // Show visual feedback (could use a toast notification in a real app)
@@ -107,20 +109,32 @@ const Product = ({ id, title, price, image, rating, description }) => {
 
   return (
     <div className="card group h-full flex flex-col transition-all duration-300 hover:shadow-xl">
-      {/* Product Image */}
-      <div className="relative overflow-hidden h-48 mb-4">
+      {/* Product Image - Clickable */}
+      <Link
+        to={`/product/${id}`}
+        className="block relative overflow-hidden h-48 mb-4"
+      >
         <img
           src={image}
           alt={title}
           className="w-full h-full object-contain transition-transform duration-300 group-hover:scale-105"
         />
-      </div>
+        <div className="absolute inset-0 bg-black bg-opacity-0 group-hover:bg-opacity-10 transition-all duration-300 flex items-center justify-center">
+          <span className="text-white bg-amber-500 px-3 py-1 rounded-full opacity-0 group-hover:opacity-100 transform translate-y-4 group-hover:translate-y-0 transition-all duration-300">
+            View Details
+          </span>
+        </div>
+      </Link>
 
       {/* Product Info */}
       <div className="flex-grow flex flex-col p-4">
-        <h2 className="text-lg font-semibold text-gray-800 mb-2 line-clamp-2 h-14">
-          {title}
-        </h2>
+        {/* Product Title - Clickable */}
+        <Link to={`/product/${id}`} className="block">
+          <h2 className="text-lg font-semibold text-gray-800 mb-2 line-clamp-2 h-14 hover:text-amber-500 transition-colors">
+            {title}
+          </h2>
+        </Link>
+
         {renderStars()}
         <div className="mt-2 text-xl font-bold text-amber-500">
           ${price?.toFixed(2)}
@@ -153,13 +167,35 @@ const Product = ({ id, title, price, image, rating, description }) => {
             </div>
           </div>
 
-          <button
-            id={`add-to-cart-${id}`}
-            onClick={handleAddToCart}
-            className="w-full btn-primary transition-colors duration-300"
-          >
-            Add to Cart
-          </button>
+          <div className="flex gap-2">
+            <button
+              id={`add-to-cart-${id}`}
+              onClick={handleAddToCart}
+              className="flex-1 btn-primary transition-colors duration-300"
+            >
+              Add to Cart
+            </button>
+
+            <Link
+              to={`/product/${id}`}
+              className="px-4 py-2 bg-slate-100 hover:bg-slate-200 text-slate-700 rounded-md transition-colors flex items-center justify-center"
+              aria-label="View product details"
+            >
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                className="h-5 w-5"
+                viewBox="0 0 20 20"
+                fill="currentColor"
+              >
+                <path d="M10 12a2 2 0 100-4 2 2 0 000 4z" />
+                <path
+                  fillRule="evenodd"
+                  d="M.458 10C1.732 5.943 5.522 3 10 3s8.268 2.943 9.542 7c-1.274 4.057-5.064 7-9.542 7S1.732 14.057.458 10zM14 10a4 4 0 11-8 0 4 4 0 018 0z"
+                  clipRule="evenodd"
+                />
+              </svg>
+            </Link>
+          </div>
         </div>
       </div>
     </div>

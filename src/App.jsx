@@ -16,14 +16,6 @@ import router from './router';
 export const ShopContext = createContext();
 
 function App() {
-  const [products, setProducts] = useState([]);
-  useEffect(() => {
-    fetch('https://fakestoreapi.com/products')
-      .then((response) => response.json())
-      .then((res) => setProducts(res));
-  }, []);
-  console.log(products);
-
   // build a homepage and a shop page
 
   // shop page needs a navigaton element that displays current number of items in a cart

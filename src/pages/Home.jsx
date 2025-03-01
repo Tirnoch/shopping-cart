@@ -1,21 +1,111 @@
-import { useState, useEffect, useContext } from 'react';
-import { Link } from 'react-router';
+import { Link } from 'react-router-dom';
+import Hero from '../components/Hero';
 
 const Home = () => {
   return (
-    <main className="h-svh ">
-      <div className="items-center mx-auto p-8 rounded-xl w-1/2 bg-slate-100 bg-opacity-50">
-        <p className="text-4xl">Welcome to my fake store</p>
-        <p>
-          This is where I showcase a mock store for the odin project curriculum
-        </p>
-        <Link to="/shop">
-          <button className="w-full bg-transparent hover:bg-amber-200  font-semibold py-2 px-4 border border-slate-700 border-transparent rounded active:bg-amber-300">
-            Shop Now
-          </button>
-        </Link>
-      </div>
-      <div></div>
+    <main>
+      <Hero />
+
+      <section className="py-16 bg-white bg-opacity-80">
+        <div className="container-content">
+          <div className="max-w-3xl mx-auto text-center">
+            <h2 className="text-3xl font-bold text-gray-800 mb-6">
+              Welcome to FakeShop
+            </h2>
+            <p className="text-lg text-gray-600 mb-8">
+              This is a demonstration store built for the Odin Project
+              curriculum. Browse our collection of products and enjoy the
+              shopping experience!
+            </p>
+            <Link to="/shop">
+              <button className="btn-primary">Shop Now</button>
+            </Link>
+          </div>
+
+          <div className="mt-16 grid grid-cols-1 md:grid-cols-3 gap-8">
+            {/* Feature 1 */}
+            <div className="card flex flex-col items-center text-center p-6">
+              <div className="w-16 h-16 bg-amber-100 rounded-full flex items-center justify-center mb-4">
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  className="h-8 w-8 text-amber-500"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M5 13l4 4L19 7"
+                  />
+                </svg>
+              </div>
+              <h3 className="text-xl font-semibold text-gray-800 mb-2">
+                Quality Products
+              </h3>
+              <p className="text-gray-600">
+                Our products are carefully selected to ensure the highest
+                quality.
+              </p>
+            </div>
+
+            {/* Feature 2 */}
+            <div className="card flex flex-col items-center text-center p-6">
+              <div className="w-16 h-16 bg-amber-100 rounded-full flex items-center justify-center mb-4">
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  className="h-8 w-8 text-amber-500"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"
+                  />
+                </svg>
+              </div>
+              <h3 className="text-xl font-semibold text-gray-800 mb-2">
+                Fast Shipping
+              </h3>
+              <p className="text-gray-600">
+                Get your products delivered quickly with our expedited shipping
+                options.
+              </p>
+            </div>
+
+            {/* Feature 3 */}
+            <div className="card flex flex-col items-center text-center p-6">
+              <div className="w-16 h-16 bg-amber-100 rounded-full flex items-center justify-center mb-4">
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  className="h-8 w-8 text-amber-500"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a3 3 0 00-3 3v8a3 3 0 003 3z"
+                  />
+                </svg>
+              </div>
+              <h3 className="text-xl font-semibold text-gray-800 mb-2">
+                Secure Payments
+              </h3>
+              <p className="text-gray-600">
+                Shop with confidence knowing your payments are secure and
+                protected.
+              </p>
+            </div>
+          </div>
+        </div>
+      </section>
     </main>
   );
 };

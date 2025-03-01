@@ -1,6 +1,6 @@
 import { Link } from 'react-router-dom';
 import { useState, useEffect, useContext } from 'react';
-import { ShopContext } from './Layout';
+import { ShopContext } from '../context/ShopContext';
 import Product from '../components/Product';
 
 const Home = () => {

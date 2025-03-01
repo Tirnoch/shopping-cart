@@ -1,11 +1,9 @@
 import { Outlet, Link, useLocation } from 'react-router-dom';
-import { useState, createContext, useEffect } from 'react';
+import { useState, useEffect } from 'react';
+import { ShopContext } from '../context/ShopContext';
 
 import Logo from '../assets/logo';
 import Footer from '../components/Footer';
-
-// Create a context for cart items
-export const ShopContext = createContext();
 
 const Layout = () => {
   const [products, setProducts] = useState([]);

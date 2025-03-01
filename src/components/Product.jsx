@@ -1,5 +1,6 @@
 import { useState, useContext } from 'react';
-import { ShopContext } from '../pages/Layout';
+import { ShopContext } from '../context/ShopContext';
+import PropTypes from 'prop-types';
 
 const Product = ({ id, title, price, image, rating, description }) => {
   const [quantity, setQuantity] = useState(1);
@@ -163,6 +164,18 @@ const Product = ({ id, title, price, image, rating, description }) => {
       </div>
     </div>
   );
+};
+
+Product.propTypes = {
+  id: PropTypes.string.isRequired,
+  title: PropTypes.string.isRequired,
+  price: PropTypes.number.isRequired,
+  image: PropTypes.string.isRequired,
+  rating: PropTypes.shape({
+    rate: PropTypes.number,
+    count: PropTypes.number,
+  }),
+  description: PropTypes.string.isRequired,
 };
 
 export default Product;

@@ -43,7 +43,7 @@ const Cart = () => {
             Your Cart is Empty
           </h2>
           <p className="text-gray-600 mb-8">
-            Looks like you haven't added any products to your cart yet.
+            Looks like you haven&apos;t added any products to your cart yet.
           </p>
           <Link to="/shop">
             <button className="btn-primary">Continue Shopping</button>
